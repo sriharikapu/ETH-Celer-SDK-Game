@@ -54,6 +54,11 @@ h2 {
     font-size: 40px;
 }
 
+.main-header {
+    text-align: center;
+    margin-top: -75px;
+}
+
 .game {
     padding: 2em;
     background: #eee;

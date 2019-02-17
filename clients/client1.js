@@ -44,6 +44,8 @@ function deserializeState(state) {
     //depositEth(amountWei: string): Promise<string>
     await client.depositEth('100');
 
+    await timeout(2000);
+
     //openEthChannel(amountWei: string, peerAmountWei: string): Promise<string>
     const channelID = await client.openEthChannel('1000', '1000'); //user and server deposit amount
     statusElement.innerHTML = 'channel has been opened';
@@ -71,7 +73,6 @@ function deserializeState(state) {
         transactionNo = state.transactionNo;
         transactionNo++;
         state = serializeState({transactionNo: transactionNo});
-        // console.log('state serialized again: ', state);
 
         balance = await client.getEthBalance();
         playerBalanceElement.innerHTML = balance.freeBalance;

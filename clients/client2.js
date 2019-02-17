@@ -32,6 +32,8 @@ const client = new celer.Client('http://localhost:29980');
     //depositEth(amountWei: string): Promise<string>
     await client.depositEth('100');
 
+    await timeout(2000);
+
     //openEthChannel(amountWei: string, peerAmountWei: string): Promise<string>
     const channelID = await client.openEthChannel('1000', '1000'); //user and server deposit amount
     statusElement.innerHTML = 'channel has been opened';
@@ -59,7 +61,6 @@ const client = new celer.Client('http://localhost:29980');
         transactionNo = state.transactionNo;
         transactionNo++;
         state = serializeState({transactionNo: transactionNo});
-        // console.log('state serialized again: ', state);
 
         balance = await client.getEthBalance();
         playerBalanceElement.innerHTML = balance.freeBalance;
@@ -70,7 +71,8 @@ const client = new celer.Client('http://localhost:29980');
         gamesWon++;
         gamesWonElement.innerHTML = gamesWon;
 
-        // client.sendState(sessionID, opponentAddress, state);
+        //client2 only
+        client.sendState(sessionID, opponentAddress, state);
 
         return true;
     };
