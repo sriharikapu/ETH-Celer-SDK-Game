@@ -63,7 +63,7 @@ async function determineWinner() {
     }
 
     if(result === PLAYER_WIN) {
-        await timeout(6000);
+        await timeout(5000);
         statusElement.innerHTML = 'YOU WIN!';
         await balanceCheck();
     }
@@ -74,6 +74,7 @@ async function determineWinner() {
             await client.depositEth('100');
         }
         await client.sendEth('1', opponentAddress);
+        await timeout(5000);
         await balanceCheck();
         statusElement.innerHTML = 'YOU LOSE!';
     }
