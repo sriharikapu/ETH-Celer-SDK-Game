@@ -2,7 +2,7 @@
 
 # Bears, Bulls, & Bufficorns
 
-*3 legendary forces battle for crypto world domination - but who will be victorious?*  *Place your bets in this Celer Network multiplayer game.*
+*3 legendary forces battle for crypto world domination - but who will be victorious?*<br/>*Place your bets in this Celer Network multiplayer game.*
 
 Bears, Bulls, & Bufficorns is an online multiplayer JavaScript game running entirely on the Celer Network via the [Celer SDK](https://celer-network.github.io/).
 
