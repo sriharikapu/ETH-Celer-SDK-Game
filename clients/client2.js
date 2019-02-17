@@ -1,10 +1,11 @@
 const celer = require('../browser/browser'); // '../dist/index' for NodeJS
 
 const client = new celer.Client('http://localhost:29980');
+const BEAR = 0;
+const BULL = 1;
+const BUFF = 2;
 //client 1 address: 0xeE87af530753DE52088b5D60325e0ef24C3357C9
 //client 2 address: 0x05E4664a7459972EeD278cee62d8439Ba9EEDAbA
-//server contract address 0x2b26f700feb38cdddf7991c0b47d9a3cfc0498b6
-//server eth address f805979adde8d63d08490c7c965ee5c1df0aaae2
 
 (async function () {
 
