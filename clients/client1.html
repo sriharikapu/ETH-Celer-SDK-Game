@@ -18,7 +18,7 @@
 <h2>Game</h2>
 <p>&nbsp;</p>
 <div class="game">
-    <div class="buttons">
+    <div class="buttons" id="moves">
         <!--BEAR: https://i.imgur.com/x5vuuxD.png-->
         <!--BUFFICORN: https://i.imgur.com/JWtnZsm.png-->
         <!--BULL: https://i.imgur.com/H8mtqkk.png-->
@@ -26,11 +26,14 @@
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <input type="image" src="https://i.imgur.com/x5vuuxD.png" alt="BEAR" width="114" height="114" class="zoom">
+        <input type="image" id="bear" src="https://i.imgur.com/x5vuuxD.png" alt="BEAR" width="114" height="114"
+               class="zoom">
         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <input type="image" src="https://i.imgur.com/JWtnZsm.png" alt="BUFFICORN" width="114" height="147" class="zoom">
+        <input type="image" id="bufficorn" src="https://i.imgur.com/JWtnZsm.png" alt="BUFFICORN" width="114"
+               height="147" class="zoom">
         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <input type="image" src="https://i.imgur.com/H8mtqkk.png" alt="BULL" width="124" height="124" class="zoom">
+        <input type="image" id="bull" src="https://i.imgur.com/H8mtqkk.png" alt="BULL" width="124" height="124"
+               class="zoom">
     </div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
@@ -54,24 +57,8 @@
             <td><span id="playerBalance"></span> Wei</td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
             <td><b>Net Earnings: </b></td>
             <td><span id="earnings"></span> Wei</td>
-        </tr>
-        <tr>
-            <td><b>Games Won: </b></td>
-            <td><span id="gamesWon"></span></td>
-        </tr>
-        <tr>
-            <td><b>Games Lost: </b></td>
-            <td><span id="gamesLost"></span></td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td><b>Opponent Address:</b></td>
