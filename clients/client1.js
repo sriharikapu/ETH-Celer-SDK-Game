@@ -63,8 +63,10 @@ async function determineWinner() {
     }
 
     if(result === PLAYER_WIN) {
-        await timeout(5000);
         statusElement.innerHTML = 'YOU WIN!';
+        await timeout(2000);
+        await balanceCheck();
+        await timeout(3000);
         await balanceCheck();
     }
     else if(result === OPPONENT_WIN) {
@@ -73,10 +75,12 @@ async function determineWinner() {
         if (balance.freeBalance === "0") {
             await client.depositEth('100');
         }
-        await client.sendEth('1', opponentAddress);
-        await timeout(5000);
-        await balanceCheck();
         statusElement.innerHTML = 'YOU LOSE!';
+        await client.sendEth('1', opponentAddress);
+        await timeout(2000);
+        await balanceCheck();
+        await timeout(3000);
+        await balanceCheck();
     }
     else if (result === DRAW) {
         statusElement.innerHTML = 'GAME WAS A DRAW!';
