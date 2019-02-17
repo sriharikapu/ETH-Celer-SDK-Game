@@ -40,7 +40,7 @@ async function determineWinner() {
     if (playerMove === opponentMove) {
         result = DRAW;
     }
-    if (playerMove === BEAR) {
+    else if (playerMove === BEAR) {
         if (opponentMove === BULL) {
             result = PLAYER_WIN;
         } else {
@@ -63,19 +63,19 @@ async function determineWinner() {
     }
 
     if(result === PLAYER_WIN) {
+        await timeout(6000);
         statusElement.innerHTML = 'YOU WIN!';
-        await timeout(2000);
         await balanceCheck();
     }
     else if(result === OPPONENT_WIN) {
-        statusElement.innerHTML = 'YOU LOSE!';
         //sendEth(amountWei: string, destination: string): Promise<string>
         let balance = await client.getEthBalance();
         if (balance.freeBalance === "0") {
             await client.depositEth('100');
         }
-        client.sendEth('1', opponentAddress);
+        await client.sendEth('1', opponentAddress);
         await balanceCheck();
+        statusElement.innerHTML = 'YOU LOSE!';
     }
     else if (result === DRAW) {
         statusElement.innerHTML = 'GAME WAS A DRAW!';
@@ -97,18 +97,23 @@ async function choiceMade(move) {
 
     playerMove = move;
 
-    statusElement.innerHTML = 'move sent! waiting for opponent\'s move';
+    if (opponentMove === UNSET) {
+        statusElement.innerHTML = 'move sent! waiting for opponent\'s move';
+    }
+    else {
+        statusElement.innerHTML = 'determining winner...';
+    }
 
     //send move to opponent
     let state = serializeState({move: playerMove});
     await client.sendState(sessionID, opponentAddress, state);
 
+    //then hide buttons
+    movesElement.style.display = "none";
+
     if(playerMove !== UNSET && opponentMove !== UNSET) {
         await determineWinner();
     }
-
-    //then hide buttons
-    movesElement.style.display = "none";
 
 }
 
@@ -160,29 +165,31 @@ async function choiceMade(move) {
     const appInfo = {abi: randomString, bin: randomString, constructor: randomString, nonce: "1"};
 
     //callback function called upon state change that returns true if state is valid
-    const stateValidator = function (state) {
+    const stateValidator = async function (state) {
 
-        console.log('here validating');
-        statusElement.innerHTML = 'received response from opponent';
         state = deserializeState(state);
-        opponentMove = state.move;
+        opponentMove = parseInt(state.move);
 
-        // await timeout(1000);
-        //
-        // if(playerMove !== UNSET && opponentMove !== UNSET) {
-        //     determineWinner();
-        // }
-        //
-        // await balanceCheck();
+        if(playerMove !== UNSET && opponentMove !== UNSET) {
+            statusElement.innerHTML = 'determining winner...';
+            await determineWinner();
+        }
+        else {
+            statusElement.innerHTML = 'received response from opponent';
+        }
+
+        await timeout(1000);
+
+        await balanceCheck();
 
         return true;
     };
     statusElement.innerHTML = 'creating app session';
     sessionID = await client.createAppSession(appInfo, stateValidator);
 
-    //hide buttons for 10 seconds (while connecting to other player)
+    //hide buttons for 4 seconds (while connecting to other player)
     statusElement.innerHTML = 'waiting for opponent to connect...';
-    await timeout(5000);
+    await timeout(4000);
     movesElement.style.display = "block";
     statusElement.innerHTML = 'connected to opponent';
 
