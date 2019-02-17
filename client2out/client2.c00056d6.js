@@ -12430,12 +12430,31 @@ const client = new celer.Client('http://localhost:29980'); //client 1 address: 0
 
 (async function () {
   const playerAddress = '0x05E4664a7459972EeD278cee62d8439Ba9EEDAbA';
-  const opponentAddress = '0xeE87af530753DE52088b5D60325e0ef24C3357C9'; //openEthChannel(amountWei: string, peerAmountWei: string): Promise<string>
+  const opponentAddress = '0xeE87af530753DE52088b5D60325e0ef24C3357C9';
+  let earnings = 0;
+  let gamesWon = 0;
+  let gamesLost = 0;
+  const playerAddressElement = document.getElementById("playerAddress");
+  const opponentAddressElement = document.getElementById("opponentAddress");
+  const playerBalanceElement = document.getElementById("playerBalance");
+  const earningsElement = document.getElementById("earnings");
+  const gamesWonElement = document.getElementById("gamesWon");
+  const gamesLostElement = document.getElementById("gamesLost");
+  const statusElement = document.getElementById("status");
+  playerAddressElement.innerHTML = playerAddress;
+  opponentAddressElement.innerHTML = opponentAddress;
+  earningsElement.innerHTML = earnings;
+  gamesWonElement.innerHTML = gamesWon;
+  gamesLostElement.innerHTML = gamesLost; //depositEth(amountWei: string): Promise<string>
 
-  const channelID = await client.openEthChannel('100', '100'); //user and server deposit amount
+  await client.depositEth('100'); //openEthChannel(amountWei: string, peerAmountWei: string): Promise<string>
 
-  console.log('channel', channelID, 'has been opened'); // let betAmount = '1'; // 1 wei
+  const channelID = await client.openEthChannel('1000', '1000'); //user and server deposit amount
 
+  statusElement.innerHTML = 'channel has been opened';
+  let balance = await client.getEthBalance();
+  playerBalanceElement.innerHTML = balance.freeBalance;
+  let startingBalance = balance.freeBalance;
   let transactionNo = 0;
   let sessionID;
   const randomString = "random"; //appInfo: AppInfo, stateValidator: function
@@ -12448,10 +12467,10 @@ const client = new celer.Client('http://localhost:29980'); //client 1 address: 0
   };
   let state = serializeState({
     transactionNo: transactionNo
-  });
-  console.log('this is the start state: ', state); //callback function called upon state change that returns true if state is valid
+  }); //callback function called upon state change that returns true if state is valid
 
-  const stateValidator = function stateValidator(state) {
+  const stateValidator = async function stateValidator(state) {
+    statusElement.innerHTML = 'received response from opponent';
     state = deserializeState(state); // console.log('deserialized state: ', state);
 
     transactionNo = state.transactionNo;
@@ -12460,19 +12479,17 @@ const client = new celer.Client('http://localhost:29980'); //client 1 address: 0
       transactionNo: transactionNo
     }); // console.log('state serialized again: ', state);
 
-    console.log('transactionNo: ', transactionNo);
-    client.sendState(sessionID, opponentAddress, state);
+    balance = await client.getEthBalance();
+    playerBalanceElement.innerHTML = balance.freeBalance;
+    earnings = balance.freeBalance - startingBalance;
+    earningsElement.innerHTML = earnings;
+    gamesWon++;
+    gamesWonElement.innerHTML = gamesWon; // client.sendState(sessionID, opponentAddress, state);
+
     return true;
   };
 
   sessionID = await client.createAppSession(appInfo, stateValidator);
-  console.log('sessionID: ', sessionID); //sendState(sessionID: string, destination: string, state: Uint8Array): Promise<void>
-  // await client.sendState(sessionID, opponentAddress, state);
-  // const balanceBefore = await client.getEthBalance(); //offchain balance
-  // console.log('balance before', balanceBefore);
-  // await client.sendEth(betAmount, playerAddress);
-  // await timeout(1000); //100 also works
-  // const balanceAfter = await client.getEthBalance();
 })().catch(console.log);
 
 function timeout(ms) {
@@ -12485,11 +12502,7 @@ function serializeState(state) {
 
 function deserializeState(state) {
   return JSON.parse(new TextDecoder("utf-8").decode(state));
-} //have two copies of client so can run locally
-//open channel with server 
-//create app session (returns unique global session ID)
-//send state (with session ID and serialized game state)
-//if lost send money
+}
 },{"../browser/browser":"../browser/browser.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -12517,7 +12530,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62150" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49708" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
